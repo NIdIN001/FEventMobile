@@ -3,21 +3,18 @@ import {Image, StyleSheet, View} from "react-native";
 import {Link} from "react-router-native";
 
 const StartSmallButton = (props) => {
-    let stylesButt = props.styles;
-    if (!stylesButt) {
-        stylesButt = smallButtonStyles;
-    }
     return (
-        <View style={stylesButt.button}>
+        <View style={styles.button}>
             <Link to={props.link}>
-                <Image style={stylesButt.image}
+                <Image style={styles.image}
                        source={props.image}/>
             </Link>
         </View>
     );
 };
 
-const smallButtonStyles = StyleSheet.create({
+
+const styles = StyleSheet.create({
     button: {
         width: 37,
         height: 37,

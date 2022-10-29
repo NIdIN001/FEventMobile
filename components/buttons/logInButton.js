@@ -36,7 +36,7 @@ let styles = StyleSheet.create({
         fontSize: 20,
         lineHeight: 25,
         color: '#FFFFFF',
-}
+    }
 })
 
 export default LogInButton;

@@ -32,17 +32,16 @@ const StartScreen = () => {
     return (
         <View style={startStyles.background} onLayout={onLayoutRootView}>
             <Text style={startStyles.header}>FEvent</Text>
-            <Text>{fontsLoaded}</Text>
             <View style={startStyles.viewLogo}>
                 <Image style={startStyles.logo} source = {require('../assets/icon.png')} />
             </View>
             <View style={startStyles.fields}>
                 <LogInButton title={"Войти"} link={"/log-in"}/>
                 <View style={startStyles.socialNetworks}>
-                    <StartSmallButton link={"/log-in"} image={require("../assets/google.png")}/>
-                    <StartSmallButton link={"/log-in"} image={require("../assets/google.png")}/>
-                    <StartSmallButton link={"/log-in"} image={require("../assets/google.png")}/>
-                    <StartSmallButton link={"/log-in"} image={require("../assets/google.png")}/>
+                    <StartSmallButton styles={smallButtonStyles} link={"/log-in"} image={require("../assets/google.png")}/>
+                    <StartSmallButton styles={smallButtonStyles} link={"/log-in"} image={require("../assets/google.png")}/>
+                    <StartSmallButton styles={smallButtonStyles} link={"/log-in"} image={require("../assets/google.png")}/>
+                    <StartSmallButton styles={smallButtonStyles} link={"/log-in"} image={require("../assets/google.png")}/>
                 </View>
                 <LogInButton title={"Регистрация"} link={"/register"}/>
             </View>
@@ -51,4 +50,17 @@ const StartScreen = () => {
     );
 };
 
+const smallButtonStyles = StyleSheet.create({
+    button: {
+        width: 37,
+        height: 37,
+        backgroundColor: '#86B3D2',
+        borderRadius: 10
+    },
+    image: {
+        width: '100%',
+        height: undefined,
+        aspectRatio: 1,
+    }
+})
 export default StartScreen;
