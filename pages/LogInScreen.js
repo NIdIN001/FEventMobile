@@ -17,10 +17,13 @@ const testServer = `${process.env.REACT_APP_BASE_BACK_URL}`;
 import axios from "axios";
 import Cookies from "js-cookie";
 import {showMessage} from "react-native-flash-message";
+import {useNavigate} from "react-router-native";
 
 const LogInScreen = () => {
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("")
+
+    let navigate = useNavigate();
 
     let logInFunction = async (data) => {
         if (login !== "" && password !== "") {
@@ -40,6 +43,7 @@ const LogInScreen = () => {
                         message: "Авторизация прошла успешно!",
                         type: "success",
                     });
+                    navigate("/profile")
                 }
                 else {
                     showMessage({
