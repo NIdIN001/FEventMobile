@@ -27,8 +27,8 @@ const LogInScreen = () => {
 
     let logInFunction = async (data) => {
         if (login !== "" && password !== "") {
-            console.log(`http://192.168.0.105:8080/authenticate/login`);
-            axios(`http://192.168.0.105:8080/authenticate/login`, {
+            console.log(`http://localhost:8080/authenticate/login`);
+            axios(`http://localhost:8080/authenticate/login`, {
                 method: 'post',
                 data: data,
                 headers: {
@@ -39,6 +39,8 @@ const LogInScreen = () => {
                 if (res.data.errorStatus === "OK") {
                     Cookies.set("token", res.data.data.jwtPair.accessToken);
                     Cookies.set("refresh", res.data.data.jwtPair.refreshToken);
+                    console.log( 'cookieeee')
+                    console.log( Cookies.get("token"))
                     showMessage({
                         message: "Авторизация прошла успешно!",
                         type: "success",
@@ -81,7 +83,7 @@ const LogInScreen = () => {
                            onChangeText={(value) => setPassword(value)}/>
                 <TouchableHighlight style={logStyles.button}
                                     onPress={() => {logInFunction({"login": login, "password": password})}}>
-                    <Text style={logStyles.text}>Войти</Text>
+                    <Text style={logStyles.text} >Войти</Text>
                 </TouchableHighlight>
                 <View style={logStyles.socialNetworks}>
                     <StartSmallButton styles={smallButtonStyles} link={"/log-in"} image={require("../assets/google.png")}/>
