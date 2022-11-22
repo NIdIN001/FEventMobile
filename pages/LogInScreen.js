@@ -24,11 +24,10 @@ const LogInScreen = () => {
     const [password, setPassword] = useState("")
 
     let navigate = useNavigate();
-
     let logInFunction = async (data) => {
         if (login !== "" && password !== "") {
-            console.log(`http://192.168.0.105:8080/authenticate/login`);
-            axios(`http://192.168.0.105:8080/authenticate/login`, {
+            console.log(`http://192.168.0.103:8080/authenticate/login`);
+            axios(`http://192.168.0.103:8080/authenticate/login`, {
                 method: 'post',
                 data: data,
                 headers: {
@@ -43,7 +42,7 @@ const LogInScreen = () => {
                         message: "Авторизация прошла успешно!",
                         type: "success",
                     });
-                    navigate("/profile")
+                    navigate("/main")
                 }
                 else {
                     showMessage({
@@ -77,6 +76,7 @@ const LogInScreen = () => {
                 <TextInput autoComplete={"password"}
                            placeholder={"Пароль"}
                            editable={true}
+                           secureTextEntry={true}
                            style={logStyles.textInput}
                            onChangeText={(value) => setPassword(value)}/>
                 <TouchableHighlight style={logStyles.button}

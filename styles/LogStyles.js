@@ -41,7 +41,7 @@ const startStyles = StyleSheet.create({
     },
     textInput: {
         width: "64%",
-        fontFamily: "RubikMonoOne",
+        fontFamily: "Roboto",
         fontSize: 20,
         color: "#ACACAC",
         backgroundColor: "#D9D9D9",
