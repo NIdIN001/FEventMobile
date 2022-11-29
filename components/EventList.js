@@ -19,43 +19,54 @@ const EventList = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const [fetching, setFetching] = useState(true)
     const [totalCount, setTotalCount] = useState(0)
+    const [scrollViewHeight, setScrollViewHeight] = useState(0)
+    const onContentSizeChange = (width, height) => {
+        console.log('scrollview width : ' + width);
+        console.log('scrollview height : ' + height);
+        setScrollViewHeight(height)
+    };
 
-    // useEffect(() => {
-    //     if (fetching) {
-    //         console.log("fetching")
-    //         axios(`http://localhost:8080/event/view`, {
-    //             method: 'get',
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //                 "Token": Cookies.get("token")
-    //             },
-    //         })
-    //             .then(res => {
-    //                 console.log(res)
-    //                 if (res.data.errorStatus === "OK") {
-    //                     setEvents([...events, ...res.data])
-    //                     setCurrentPage(prevState => prevState + 1)
-    //                 }
-    //                 else {
-    //                     showMessage({
-    //                         message: res.data.errorMessage,
-    //                         type: "danger",
-    //                     });
-    //                 }
-    //             })
-    //             .catch(err => {
-    //                 console.log(err)
-    //                 Alert.alert(
-    //                     "Ошибка при получении списка событий",
-    //                     "Технические шоколадки! Проверьте доступ к интернету.")
-    //             })
-    //             .finally(() => setFetching(false))
-    //     }
-    // })
+    const scrollHandler = (e) => {
+        if (scrollViewHeight - e.nativeEvent.contentOffset.y < 100) {
+            setFetching(true)
+        }
+    }
+
+    useEffect(() => {
+        if (fetching) {
+            console.log("fetching")
+            axios.get(`http://192.168.0.103:8080/event/view`,
+                 {
+                    "Content-Type": "application/json",
+                    "Token": Cookies.get("token")
+                }
+            )
+                .then(res => {
+                    console.log(res)
+                    if (res.data.errorStatus === "OK") {
+                        setEvents([...events, ...res.data.data])
+                        setCurrentPage(prevState => prevState + 1)
+                    }
+                    else {
+                        showMessage({
+                            message: res.data.errorMessage,
+                            type: "danger",
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                    Alert.alert(
+                        "Ошибка при получении списка событий",
+                        "Технические шоколадки! Проверьте доступ к интернету.")
+                })
+                .finally(() => setFetching(false))
+        }
+    }, [])
 
     return (
         <View style={styles.container}>
-            <ScrollView style={styles.scrollView}>
+            <ScrollView style={styles.scrollView} onContentSizeChange={onContentSizeChange} onScroll={scrollHandler}>
                 <View style={styles.list}>
                     {events?.map(a => <EventItem event={a} image={require("../assets/icon.png")}/>)}
                 </View>
