@@ -1,32 +1,63 @@
-import React from 'react';
-import {View, StyleSheet, ScrollView, SafeAreaView, StatusBar} from "react-native";
+import React, {useEffect, useState} from 'react';
+import {View, StyleSheet, ScrollView, SafeAreaView, StatusBar, Alert} from "react-native";
 import EventItem from "./EventItem";
+import axios from "axios";
+import Cookies from "js-cookie";
+import {showMessage} from "react-native-flash-message";
 
 const EventList = () => {
+    const [events, setEvents] = useState([
+        {'id': 1, 'name': 'Новый год', 'description': '', 'datetimeStart': 'Sat 06.11.22 15:30 ', 'datetimeEnd': 'Sat 06.11.22 17:30',
+            'maxMembers': 10, 'isOnline': false, 'isPrivate': false},
+        {'id': 2, 'name': 'Новый год', 'description': '', 'datetimeStart': 'Sat 06.11.22 15:30 ', 'datetimeEnd': 'Sat 06.11.22 17:30',
+            'maxMembers': 10, 'ageMin': 18, 'ageMax': 35, 'isOnline': false, 'isPrivate': false},
+        {'id': 3, 'name': 'Новый год', 'description': '', 'datetimeStart': 'Sat 06.11.22 15:30 ', 'datetimeEnd': 'Sat 06.11.22 17:30',
+            'maxMembers': 10, 'ageMin': 18, 'ageMax': 35, 'isOnline': false, 'isPrivate': false},
+        {'id': 4, 'name': 'Новый год', 'description': '', 'datetimeStart': 'Sat 06.11.22 15:30 ', 'datetimeEnd': 'Sat 06.11.22 17:30',
+            'ageMin': 18, 'ageMax': 35, 'isOnline': false, 'isPrivate': false},
+    ])
+    const [currentPage, setCurrentPage] = useState(1)
+    const [fetching, setFetching] = useState(true)
+    const [totalCount, setTotalCount] = useState(0)
+
+    // useEffect(() => {
+    //     if (fetching) {
+    //         console.log("fetching")
+    //         axios(`http://localhost:8080/event/view`, {
+    //             method: 'get',
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 "Token": Cookies.get("token")
+    //             },
+    //         })
+    //             .then(res => {
+    //                 console.log(res)
+    //                 if (res.data.errorStatus === "OK") {
+    //                     setEvents([...events, ...res.data])
+    //                     setCurrentPage(prevState => prevState + 1)
+    //                 }
+    //                 else {
+    //                     showMessage({
+    //                         message: res.data.errorMessage,
+    //                         type: "danger",
+    //                     });
+    //                 }
+    //             })
+    //             .catch(err => {
+    //                 console.log(err)
+    //                 Alert.alert(
+    //                     "Ошибка при получении списка событий",
+    //                     "Технические шоколадки! Проверьте доступ к интернету.")
+    //             })
+    //             .finally(() => setFetching(false))
+    //     }
+    // })
+
     return (
         <View style={styles.container}>
-            <ScrollView style={styles.scrollview}>
+            <ScrollView style={styles.scrollView}>
                 <View style={styles.list}>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
-                    <EventItem image={require("../assets/icon.png")}/>
+                    {events?.map(a => <EventItem event={a} image={require("../assets/icon.png")}/>)}
                 </View>
             </ScrollView>
         </View>
@@ -43,7 +74,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         flexGrow: 1
     },
-    scrollview: {
+    scrollView: {
         marginHorizontal: 10,
         marginBottom: "62%"
     },

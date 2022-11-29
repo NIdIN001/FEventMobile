@@ -38,7 +38,7 @@ const LogInScreen = () => {
     let registerFunction = async (data) => {
         console.log(data)
         if (login !== "" && password !== "") {
-            axios(`http://192.168.0.105:8080/user/register`, {
+            axios(`http://192.168.56.1:8080/user/register`, {
                 method: 'post',
                 data: data,
                 headers: {

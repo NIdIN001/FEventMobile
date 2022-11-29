@@ -21,6 +21,8 @@ const AddEvent = (props) => {
     const [ageMax, setAgeMax] = useState(0)
     const [isOnline, setOnline] = useState(false);
     const [isPrivate, setPrivate] = useState(false);
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
 
     let collectData = () => {
         let data = {
@@ -130,9 +132,7 @@ const AddEvent = (props) => {
         showMode('time');
     };
 
-    const [name, setName] = useState('')
 
-    const [description, setDescription] = useState('')
 
     return (
         <ScrollView style={styles.scrollview}>

@@ -32,6 +32,9 @@ const LogInScreen = () => {
                 data: data,
                 headers: {
                     "Content-Type": "application/json",
+                    "Access-Control-Allow-Credentials": true,
+                    "Access-Control-Allow-Origin": "http://localhost:9670",
+                    "Access-Control-Allow-Headers": "Authorization"
                 },
             }).then(res => {
                 console.log(res)

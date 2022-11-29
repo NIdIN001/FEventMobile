@@ -1,22 +1,49 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, StyleSheet, Image, Text} from "react-native";
 
 const EventItem = (props) => {
+    //const [ageConstrains, setAgeConstrains] = useState('')
+    let ageConstrains = ''
+    if (props.event.ageMin !== undefined || props.event.ageMax !== undefined) {
+        ageConstrains = 'Для людей'
+        if (props.event.ageMin !== undefined) {
+            ageConstrains = ageConstrains + ' с ' + props.event.ageMin
+        }
+        if (props.event.ageMax !== undefined) {
+            ageConstrains = ageConstrains + ' до ' + props.event.ageMax
+        }
+        ageConstrains = ageConstrains + ' лет'
+    }
     return (
         <View style={styles.container}>
             <View style={{display: "flex", flexDirection: "row", justifyContent: "space-around", height: "100%"}}>
                 <Image style={styles.image} source={props.image}/>
-                {/*<View style={styles.verticalTextContainer}>*/}
-                {/*    <Text>a</Text>*/}
-                {/*    <Text>a</Text>*/}
-                {/*    <Text>a</Text>*/}
-                {/*    <Text>a</Text>*/}
-                {/*</View>*/}
+
             </View>
+
             <View style={styles.bottomContainer}>
-                <Text style={styles.nameText}>props.name</Text>
+                <Text style={styles.nameText}>{props.event.name}</Text>
                 <View style={styles.descriptionContainer}>
-                    <Text style={styles.descriptionText}>props.descriptionprops.descriptionprops.descriptionprops.descriptionprops.descriptionprops.descriptionprops.descriptionprops.description</Text>
+                    <View style={styles.pairDataContainer}>
+                        <Text style={styles.dataText}>Начало: {props.event.datetimeStart}</Text>
+                    </View>
+                    <View style={styles.pairDataContainer}>
+                        <Text style={styles.dataText}>Конец: {props.event.datetimeEnd}</Text>
+                    </View>
+                    {
+                        ageConstrains !== '' ?
+                        <View style={styles.pairDataContainer}>
+                            <Text style={styles.descriptionText}>{ageConstrains}</Text>
+                        </View> : <></>
+                    }
+
+                    <View style={styles.pairDataContainer}>
+                        <Text style={styles.descriptionText}>{props.event.maxMembers === undefined? "" : "До " + props.event.maxMembers + " участников"}</Text>
+                    </View>
+                    <View style={styles.pairDataContainer}>
+                        <Text style={styles.descriptionText}>{props.event.isOnline ? "Онлайн" : "Оффлайн"}</Text>
+                        <Text style={styles.descriptionText}>{props.event.isPrivate ? "Доступно для друзей" : "Доступно для всех"}</Text>
+                    </View>
                 </View>
             </View>
         </View>
@@ -25,8 +52,11 @@ const EventItem = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        aspectRatio: 1,
-        width: "40%",
+        display:"flex",
+        flexDirection:"row",
+        justifyContent:"space-around",
+        aspectRatio: 5/2,
+        width: "100%",
         backgroundColor: "#D9D9D9",
         shadowColor: "rgba(0, 0, 0, 0.25)",
         shadowOffset: {
@@ -40,30 +70,52 @@ const styles = StyleSheet.create({
     },
     image: {
         position: "relative",
-        width: "40%",
-        height: "40%",
+        width: "42%",
+        height: "42%",
         marginLeft: "-4%",
-        marginTop: "6%"
+        marginTop: "32%"
     },
     bottomContainer: {
-        marginTop: "-40%",
+        //marginTop: "-50%",
         //backgroundColor: "#123456"
+        display:"flex",
+        flexDirection: "column",
+        //flexWrap:"wrap",
+        marginTop: "6%"
     },
     descriptionContainer: {
+        display:"flex",
+        flexDirection: "column",
+        justifyContent: "space-around",
         height: "65%",
         marginLeft: "5%",
         marginRight: "5%"
+    },
+    pairDataContainer: {
+        height: "60%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-around",
+        flexWrap: "wrap",
     },
     nameText: {
         fontFamily: "Roboto",
         color: "#000000",
         textAlign: "center",
-        fontWeight: "bold"
+        fontWeight: "bold",
+        marginBottom: "5%"
     },
     descriptionText: {
+     //   display:"flex",
+     //   flexDirection: "column",
         height: "40%",
         overflow: "hidden",
         textAlign: "left"
+    },
+    dataText: {
+        //   display:"flex",
+        //   flexDirection: "column",
+        height: "40%",
     },
     verticalTextContainer: {
         display: "flex",
