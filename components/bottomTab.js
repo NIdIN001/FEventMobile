@@ -3,13 +3,16 @@ import {Image, Text, View} from "react-native";
 import {StyleSheet} from "react-native";
 import startStyles from "../styles/StartStyles";
 import api from "js-cookie";
+import {Link} from "react-router-native";
 
-const BottomTabs = (props) => {
+const BottomTab = (props) => {
     return (
-        <View style={styles.background}>
-            <Image source={props.svg} />
-            <Text>{props.name}</Text>
-        </View>
+        <Link to={props.link} style={styles.background}>
+            <View>
+                <Image source={props.svg} />
+                <Text>{props.name}</Text>
+            </View>
+        </Link>
     );
 };
 
@@ -34,4 +37,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default BottomTabs;
+export default BottomTab;
