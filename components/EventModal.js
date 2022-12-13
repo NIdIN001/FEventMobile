@@ -74,6 +74,9 @@ const EventModal = (props) => {
                     <Text style={styles.dataText}>Конец: {props.event.datetimeEnd}</Text>
                 </View>
                 <View style={styles.fieldContainer}>
+                    <Text style={styles.dataText}>Категория: {props.event.category}</Text>
+                </View>
+                <View style={styles.fieldContainer}>
                     <Text style={styles.descriptionText}>{props.event.isOnline ? "Онлайн" : "Оффлайн"}</Text>
                 </View>
                 <View style={styles.fieldContainer}>
