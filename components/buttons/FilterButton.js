@@ -1,11 +1,19 @@
-import React from 'react';
-import {Image, View, StyleSheet} from "react-native";
+import React, {useState} from 'react';
+import {Image, View, StyleSheet, TouchableOpacity, TouchableHighlight, Modal} from "react-native";
+import FilterModal from "../FilterModal";
 
-const FilterButton = () => {
+const FilterButton = (props) => {
+    const [displayFilter, setDisplayFilter] = useState(false)
     return (
-        <View style={styles.container}>
-            <Image source={require("../../assets/filter.png")}/>
-        </View>
+        <TouchableHighlight onPress={() => setDisplayFilter(true)}>
+            <View style={styles.container}>
+                <Modal hasBackdrop={false} animationType={'fade'} visible={displayFilter}
+                       onRequestClose={() => { setDisplayFilter(false)} }>
+                    <FilterModal setFilter={props.setFilter}/>
+                </Modal>
+                <Image source={require("../../assets/filter.png")}/>
+            </View>
+        </TouchableHighlight>
     );
 };
 

@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
-import {Image, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Alert, Image, Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import axios from "axios";
+import Cookies from "js-cookie";
+import {showMessage} from "react-native-flash-message";
 
 const EventModal = (props) => {
     let ageConstrains = ''
@@ -15,6 +18,39 @@ const EventModal = (props) => {
     }
     const [curEvent, setCurEvent] = useState(props.event)
     console.log(props.event)
+
+    let joinEventFunction = async () => {
+        console.log('http://192.168.0.103:8080/user/join/'+curEvent.id);
+        axios('http://192.168.0.103:8080/user/join/'+curEvent.id, {
+            method: 'post',
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then(res => {
+            console.log(res)
+            if (res.data.errorStatus === "OK") {
+                showMessage({
+                    message: "Присоединение к событию произошло успешно!",
+                    type: "success",
+                });
+                props.callback(false)
+            }
+            else {
+                showMessage({
+                    message: res.data.errorMessage,
+                    type: "danger",
+                });
+            }
+        })
+            .catch(err => {
+                console.log(err)
+                Alert.alert(
+                    "Ошибка при создании события",
+                    "Технические шоколадки! Проверьте доступ к интернету.")
+            })
+
+    }
+
     return (
         <ScrollView style={styles.scrollview}>
             {(curEvent === null || curEvent === undefined) ?
@@ -54,7 +90,7 @@ const EventModal = (props) => {
                 </View>
                 {/*</View>*/}
                 <View style={styles.fieldContainer}>
-                    <Pressable style={styles.button}>
+                    <Pressable style={styles.button} onPress={joinEventFunction}>
                         <Text style={styles.buttonText}>+</Text>
                     </Pressable>
                 </View>

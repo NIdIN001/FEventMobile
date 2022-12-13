@@ -5,8 +5,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import {showMessage} from "react-native-flash-message";
 
-const EventList = () => {
-    const [events, setEvents] = useState([
+const EventList = (props) => {
+    console.log(props.filter)
+    /*const [events, setEvents] = useState([
         {'id': 1, 'name': 'Новый год', 'description': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbb ' +
                 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb ' +
                 'ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc ', 'datetimeStart': 'Sat 06.11.22 15:30 ', 'datetimeEnd': 'Sat 06.11.22 17:30',
@@ -17,7 +18,8 @@ const EventList = () => {
             'maxMembers': 10, 'ageMin': 18, 'ageMax': 35, 'isOnline': false, 'isPrivate': false},
         {'id': 4, 'name': 'Новый год', 'description': 'a', 'datetimeStart': 'Sat 06.11.22 15:30 ', 'datetimeEnd': 'Sat 06.11.22 17:30',
             'ageMin': 18, 'ageMax': 35, 'isOnline': false, 'isPrivate': false},
-    ])
+    ])*/
+    const [events, setEvents] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [fetching, setFetching] = useState(true)
     const [totalCount, setTotalCount] = useState(0)
@@ -39,6 +41,7 @@ const EventList = () => {
             console.log("fetching")
             axios.get(`http://192.168.0.103:8080/event/view`,
                  {
+                     params: props.filter,
                     "Content-Type": "application/json",
                     "Token": Cookies.get("token")
                 }
