@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Image, Text} from "react-native";
+import {View, StyleSheet, Image, Text, Modal, TouchableHighlight} from "react-native";
+import EventModal from "./EventModal";
 
 const EventItem = (props) => {
     //const [ageConstrains, setAgeConstrains] = useState('')
+    const [displayFullInfo, setDisplayFullInfo] = useState(false)
     let ageConstrains = ''
     if (props.event.ageMin !== undefined || props.event.ageMax !== undefined) {
         ageConstrains = 'Для людей'
@@ -15,10 +17,18 @@ const EventItem = (props) => {
         ageConstrains = ageConstrains + ' лет'
     }
     return (
-        <View style={styles.container}>
-            <View style={{display: "flex", flexDirection: "row", justifyContent: "space-around", height: "100%"}}>
-                <Image style={styles.image} source={props.image}/>
+        <TouchableHighlight onPress={() => setDisplayFullInfo(true)}>
 
+        <View style={styles.container}>
+            <Modal hasBackdrop={false} animationType={'fade'} visible={displayFullInfo}
+                   onRequestClose={() => { setDisplayFullInfo(false); } }>
+                <EventModal event={props.event} callback={setDisplayFullInfo}/>
+            </Modal>
+            <View style={{display: "flex", flexDirection: "row", justifyContent: "space-around", height: "100%"}}>
+                {/*<TouchableHighlight style={styles.imageContainer}
+                                    onPress={() => setDisplayFullInfo(true)}>*/}
+                    <Image style={styles.image} source={props.image}/>
+                {/*</TouchableHighlight>*/}
             </View>
 
             <View style={styles.bottomContainer}>
@@ -47,6 +57,7 @@ const EventItem = (props) => {
                 </View>
             </View>
         </View>
+        </TouchableHighlight>
     );
 };
 
@@ -67,6 +78,10 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         borderWidth: 1,
         marginBottom: "5%"
+    },
+    imageContainer: {
+        width: "65%",
+        height: "110%"
     },
     image: {
         position: "relative",

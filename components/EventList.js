@@ -7,13 +7,15 @@ import {showMessage} from "react-native-flash-message";
 
 const EventList = () => {
     const [events, setEvents] = useState([
-        {'id': 1, 'name': 'Новый год', 'description': '', 'datetimeStart': 'Sat 06.11.22 15:30 ', 'datetimeEnd': 'Sat 06.11.22 17:30',
+        {'id': 1, 'name': 'Новый год', 'description': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbb ' +
+                'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb ' +
+                'ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc ', 'datetimeStart': 'Sat 06.11.22 15:30 ', 'datetimeEnd': 'Sat 06.11.22 17:30',
             'maxMembers': 10, 'isOnline': false, 'isPrivate': false},
-        {'id': 2, 'name': 'Новый год', 'description': '', 'datetimeStart': 'Sat 06.11.22 15:30 ', 'datetimeEnd': 'Sat 06.11.22 17:30',
+        {'id': 2, 'name': 'Новый год', 'description': 'a', 'datetimeStart': 'Sat 06.11.22 15:30 ', 'datetimeEnd': 'Sat 06.11.22 17:30',
             'maxMembers': 10, 'ageMin': 18, 'ageMax': 35, 'isOnline': false, 'isPrivate': false},
-        {'id': 3, 'name': 'Новый год', 'description': '', 'datetimeStart': 'Sat 06.11.22 15:30 ', 'datetimeEnd': 'Sat 06.11.22 17:30',
+        {'id': 3, 'name': 'Новый год', 'description': 'a', 'datetimeStart': 'Sat 06.11.22 15:30 ', 'datetimeEnd': 'Sat 06.11.22 17:30',
             'maxMembers': 10, 'ageMin': 18, 'ageMax': 35, 'isOnline': false, 'isPrivate': false},
-        {'id': 4, 'name': 'Новый год', 'description': '', 'datetimeStart': 'Sat 06.11.22 15:30 ', 'datetimeEnd': 'Sat 06.11.22 17:30',
+        {'id': 4, 'name': 'Новый год', 'description': 'a', 'datetimeStart': 'Sat 06.11.22 15:30 ', 'datetimeEnd': 'Sat 06.11.22 17:30',
             'ageMin': 18, 'ageMax': 35, 'isOnline': false, 'isPrivate': false},
     ])
     const [currentPage, setCurrentPage] = useState(1)
@@ -44,8 +46,11 @@ const EventList = () => {
                 .then(res => {
                     console.log(res)
                     if (res.data.errorStatus === "OK") {
-                        setEvents([...events, ...res.data.data])
-                        setCurrentPage(prevState => prevState + 1)
+                        console.log(res.data.data.eventFoundDto)
+                        if (res.data.data.eventFoundDto !== []) {
+                            setEvents([...events, ...res.data.data.eventFoundDto])
+                            setCurrentPage(prevState => prevState + 1)
+                        }
                     }
                     else {
                         showMessage({

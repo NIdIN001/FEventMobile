@@ -136,104 +136,104 @@ const AddEvent = (props) => {
 
     return (
         <ScrollView style={styles.scrollview}>
-        <View style={styles.container}>
-            <View style={styles.crossContainer} onTouchEnd={() => {props.callback(false)}}>
-                <Image style={styles.cross} source={require("../assets/cross.png")}/>
-            </View>
-            <View style={{flex: 1, marginBottom: "10%", alignItems: "center"}}>
-                    <View style={styles.list}>
-                        {/*input fields*/}
-                        <View style={styles.fieldContainer}>
-                            <Text style={styles.textContainer}>Название</Text>
-                            <TextInput style={styles.textContainer}
-                                       placeholder={"Название"}
-                                       editable={true}
-                                       onChangeText={(value) => setName(value)}/>
-                        </View>
+            <View style={styles.container}>
+                <View style={styles.crossContainer} onTouchEnd={() => {props.callback(false)}}>
+                    <Image style={styles.cross} source={require("../assets/cross.png")}/>
+                </View>
+                <View style={{flex: 1, marginBottom: "10%", alignItems: "center"}}>
+                        <View style={styles.list}>
+                            {/*input fields*/}
+                            <View style={styles.fieldContainer}>
+                                <Text style={styles.textContainer}>Название</Text>
+                                <TextInput style={styles.textContainer}
+                                           placeholder={"Название"}
+                                           editable={true}
+                                           onChangeText={(value) => setName(value)}/>
+                            </View>
 
-                        <View style={styles.descriptionContainer}>
-                            <TextInput style={styles.description}
-                                       placeholder={"Добавьте описание вашего события"}
-                                       editable={true}
-                                       multiline={true}
-                                       onChangeText={(value) => setDescription(value)}/>
+                            <View style={styles.descriptionContainer}>
+                                <TextInput style={styles.description}
+                                           placeholder={"Добавьте описание вашего события"}
+                                           editable={true}
+                                           multiline={true}
+                                           onChangeText={(value) => setDescription(value)}/>
 
-                        </View>
-                        <View>
-                            <Pressable style={styles.fieldContainer} onPress={showDatepicker}>
-                                <Text style={styles.textContainer}>{dateStartChose ? dateTimeStart.toLocaleString() : "Когда начнется событие?"}</Text>
+                            </View>
+                            <View>
+                                <Pressable style={styles.fieldContainer} onPress={showDatepicker}>
+                                    <Text style={styles.textContainer}>{dateStartChose ? dateTimeStart.toLocaleString() : "Когда начнется событие?"}</Text>
+                                </Pressable>
+                                <Pressable style={styles.fieldContainer} onPress={showDatepickerFinish}>
+                                    <Text style={styles.textContainer}>{dateFinishChose ? dateTimeFinish.toLocaleString() : "Когда закончится событие?"}</Text>
+                                </Pressable>
+
+                                {show && (
+                                    <DateTimePicker
+                                        testID="dateTimePicker"
+                                        value={dateTimeStart}
+                                        mode={mode}
+                                        is24Hour={true}
+                                        onChange={onChange}
+                                    />
+                                )}
+                                {showFinish && (
+                                    <DateTimePicker
+                                        testID="dateTimePicker"
+                                        value={dateTimeFinish}
+                                        mode={mode}
+                                        is24Hour={true}
+                                        onChange={onChangeFinish}
+                                    />
+                                )}
+                            </View>
+
+                            <View style={styles.fieldContainer}>
+                                <Text style={styles.textContainer}>Адрес</Text>
+                                <TextInput style={styles.textContainer}
+                                           placeholder={"Адрес"}
+                                           editable={true}
+                                           onChangeText={(value) => setAddress(value)}/>
+                            </View>
+                            <View style={styles.fieldContainer}>
+                                <Text style={styles.textContainer}>Максимальное количество участников</Text>
+                                <TextInput style={styles.textContainer}
+                                           placeholder={"5"}
+                                           keyboardType={"numeric"}
+                                           editable={true}
+                                           onChangeText={(value) => setMaxMembers(parseInt(value))}/>
+                            </View>
+                            <View style={styles.fieldContainer}>
+                                <Text style={styles.textContainer}>Минимальный возраст участников</Text>
+                                <TextInput style={styles.textContainer}
+                                           placeholder={"5"}
+                                           keyboardType={"numeric"}
+                                           editable={true}
+                                           onChangeText={(value) => setAgeMin(parseInt(value))}/>
+                            </View>
+                            <View style={styles.fieldContainer}>
+                                <Text style={styles.textContainer}>Максимальный возраст участников</Text>
+                                <TextInput style={styles.textContainer}
+                                           placeholder={"5"}
+                                           keyboardType={"numeric"}
+                                           editable={true}
+                                           onChangeText={(value) => setAgeMax(parseInt(value))}/>
+                            </View>
+
+                            <View style={styles.fieldContainer}>
+                                <Text style={styles.textContainer}>Онлайн событие</Text>
+                                <Checkbox value={isOnline} onValueChange={setOnline} />
+                            </View>
+                            <View style={styles.fieldContainer}>
+                                <Text style={styles.textContainer}>Приватное событие</Text>
+                                <Checkbox value={isPrivate} onValueChange={setPrivate} />
+                            </View>
+                            <Pressable style={styles.fieldContainer} onPress={AddEventFunction}>
+                                <Text style={styles.addText}>Добавить событие</Text>
                             </Pressable>
-                            <Pressable style={styles.fieldContainer} onPress={showDatepickerFinish}>
-                                <Text style={styles.textContainer}>{dateFinishChose ? dateTimeFinish.toLocaleString() : "Когда закончится событие?"}</Text>
-                            </Pressable>
-
-                            {show && (
-                                <DateTimePicker
-                                    testID="dateTimePicker"
-                                    value={dateTimeStart}
-                                    mode={mode}
-                                    is24Hour={true}
-                                    onChange={onChange}
-                                />
-                            )}
-                            {showFinish && (
-                                <DateTimePicker
-                                    testID="dateTimePicker"
-                                    value={dateTimeFinish}
-                                    mode={mode}
-                                    is24Hour={true}
-                                    onChange={onChangeFinish}
-                                />
-                            )}
                         </View>
-
-                        <View style={styles.fieldContainer}>
-                            <Text style={styles.textContainer}>Адрес</Text>
-                            <TextInput style={styles.textContainer}
-                                       placeholder={"Адрес"}
-                                       editable={true}
-                                       onChangeText={(value) => setAddress(value)}/>
-                        </View>
-                        <View style={styles.fieldContainer}>
-                            <Text style={styles.textContainer}>Максимальное количество участников</Text>
-                            <TextInput style={styles.textContainer}
-                                       placeholder={"5"}
-                                       keyboardType={"numeric"}
-                                       editable={true}
-                                       onChangeText={(value) => setMaxMembers(parseInt(value))}/>
-                        </View>
-                        <View style={styles.fieldContainer}>
-                            <Text style={styles.textContainer}>Минимальный возраст участников</Text>
-                            <TextInput style={styles.textContainer}
-                                       placeholder={"5"}
-                                       keyboardType={"numeric"}
-                                       editable={true}
-                                       onChangeText={(value) => setAgeMin(parseInt(value))}/>
-                        </View>
-                        <View style={styles.fieldContainer}>
-                            <Text style={styles.textContainer}>Максимальный возраст участников</Text>
-                            <TextInput style={styles.textContainer}
-                                       placeholder={"5"}
-                                       keyboardType={"numeric"}
-                                       editable={true}
-                                       onChangeText={(value) => setAgeMax(parseInt(value))}/>
-                        </View>
-
-                        <View style={styles.fieldContainer}>
-                            <Text style={styles.textContainer}>Онлайн событие</Text>
-                            <Checkbox value={isOnline} onValueChange={setOnline} />
-                        </View>
-                        <View style={styles.fieldContainer}>
-                            <Text style={styles.textContainer}>Приватное событие</Text>
-                            <Checkbox value={isPrivate} onValueChange={setPrivate} />
-                        </View>
-                        <Pressable style={styles.fieldContainer} onPress={AddEventFunction}>
-                            <Text style={styles.addText}>Добавить событие</Text>
-                        </Pressable>
-                    </View>
-                {/*</ScrollView>*/}
+                    {/*</ScrollView>*/}
+                </View>
             </View>
-        </View>
         </ScrollView>
 
     );
