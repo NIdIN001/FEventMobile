@@ -16,6 +16,13 @@ const ProfileEdit = () => {
     const [friends, setFriends] = useState([])
     const [addFr, setAddFr] = useState();
 
+    let listFriends = friends.map((fr) =>
+        <View style={styles.flex} key={fr['id']}>
+            <Text>{fr['login']}</Text>
+            <Image style={styles.icon} source={require("../../assets/gal.png")} onClick={function (){addFriend(fr['id'])}}></Image>
+            <Image style={styles.icon} source={require("../../assets/krest.png")} onClick={function (){noAddFriend(fr['id'])}}></Image>
+        </View>
+    )
 
     useEffect(() => {
         async function prepare() {
@@ -36,11 +43,10 @@ const ProfileEdit = () => {
 
     let accessToken = 'accessToken=' + Cookies.get("token");
     let refreshToken = 'refreshToken=' + Cookies.get("refresh");
-    let url = "http://localhost:8080/friends/REQUEST";
 
-    let listFriends;
-    (async function get(){
-        axios(url,{
+    function setName(){
+
+        fetch("http://localhost:8080/friends/REQUEST", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -49,37 +55,59 @@ const ProfileEdit = () => {
                     refreshToken,
                 }
             },
+
         }).then(async response => {
-            console.log(213123123)
-            console.log(friends)
-            console.log(response)
-            listFriends = [];
-            document.getElementById("frrr").innerHTML = ''
 
-            console.log(response.data["data"])
-            response.data["data"].forEach(fr => {
-                let a = friends
-                let b = fr["login"]
-                a.push(fr["login"])
-                setFriends(a)
-                document.getElementById("frrr").innerHTML += "<option style={styles.option} id=b>" + b + "</option>"
+            let a = await response.json()
+            console.log(a)
+            let b = []
+            let c = []
+            a['data'].forEach(s => {
+                b.push(s["from"])
             })
-
+            setFriends(b)
             console.log(friends)
         })
             .catch(error => console.log("error", error));
-
-        listFriends = friends.map((fr) =>
-            <option style={styles.option}>{fr}</option>
-        )
-    })();
+    }
 
 
+    function addFriend(rr){
+        console.log('add')
+        console.log(rr)
+        axios("http://localhost:8080/friends/accept",{
+            method: "POST",
+            data: {"friendId": rr},
+            headers: {
+                "Content-Type": "application/json",
+                Cookie: {
+                    accessToken,
+                    refreshToken,
+                }
+            },
+        }).then(res => {
+            console.log(res)
+            if (res.data.errorStatus === "OK") {
+                showMessage({
+                    message: "Заявка отправлена!",
+                    type: "success",
+                });
+            }
+            else {
+                showMessage({
+                    message: res.data.errorMessage,
+                    type: "danger",
+                });
+            }
+        })
+            .catch(error => console.log("error", error));
+        console.log(name)
+    }
 
-    function addFriend(){
+    function noAddFriend(){
         console.log('add')
         console.log(addFr)
-        axios("http://localhost:8080/friends/add",{
+        axios("http://localhost:8080/friends/delete/REQUEST",{
             method: "POST",
             data: {"friendId": addFr},
             headers: {
@@ -113,15 +141,15 @@ const ProfileEdit = () => {
             <Link to={'/friends'} style={styles.back}>
                 <Image style={styles.backarrow} source={require("../../assets/profile/backarrow.png")}></Image>
             </Link>
-            <Text style={styles.header}>Добавление в друзья</Text>
+            <Text style={styles.header} onClick={function (){setName()}}>Добавление в друзья</Text>
             <View style={styles.inblock}>
-                <TextInput style={styles.input} placeholder={'Введите ID'} onChangeText={function(text) {setAddFr(text)}}></TextInput>
+                <TextInput style={styles.input} placeholder={'Введите ID'} onChangeText={function(text) {setAdwwdFr(text)}}></TextInput>
                 <button style={styles.link1} onClick={function() {addFriend()}}>Добавить</button>
             </View>
             <form style={styles.inblock}>
-                <select style={styles.list} size="10" id="frrr">
+                <div style={styles.list} id="frrr">
                     {listFriends}
-                </select>
+                </div>
             </form>
         </View>
     );
@@ -135,7 +163,18 @@ let styles = StyleSheet.create({
     },
 
     flex: {
-        flexDirection: "row"
+        flexDirection: "row",
+        justifyContent: "space-between"
+    },
+
+    icon: {
+        marginLeft: '10px',
+        width: '32px',
+        height: '32px',
+        top: '33%',
+        textShadowColor: 'rgba(0, 0, 0, 0.25)',
+        textShadowOffset: {width: 0, height: 2},
+        textShadowRadius: 2
     },
 
     header: {

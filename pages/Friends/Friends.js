@@ -13,7 +13,10 @@ const Friends = () => {
     });
 
     const [friends, setFriends] = useState([])
-    let listFriends;
+    const [friendsFull, setFriendsFull] = useState([])
+    let listFriends = friends.map((fr) =>
+        <option style={styles.option} key={fr} value={fr} onClick={function (){}}>{fr}</option>
+    )
 
     useEffect(() => {
 
@@ -36,12 +39,43 @@ const Friends = () => {
         return null;
     }
 
-    let accessToken = 'accessToken=' + Cookies.get("token");
-    let refreshToken = 'refreshToken=' + Cookies.get("refresh");
+    let accessToken = 'accessToken=' + Cookies.get("accessToken");
+    let refreshToken = 'refreshToken=' + Cookies.get("refreshToken");
     let url = "http://localhost:8080/friends/CONFIRMED";
 
-    (async function get(){
-        axios("http://localhost:8080/friends/CONFIRMED",{
+    // (async function get(){
+    //     axios("http://localhost:8080/friends/CONFIRMED",{
+    //         method: "GET",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             Cookie: {
+    //                 accessToken,
+    //                 refreshToken,
+    //             }
+    //         },
+    //     }).then(async response => {
+    //         console.log(response.data["data"])
+    //         response.data["data"].forEach(fr => {
+    //             let a = friends
+    //             let b = fr["from"]['login']
+    //             a.push(fr["from"])
+    //             setFriends(a)
+    //             document.getElementById("frrr").innerHTML += "<option style={styles.option1} id=b>" + b + "</option>"
+    //
+    //         })
+    //         listFriends = friends.map((fr) =>
+    //             <option style={styles.option}>{fr}</option>
+    //         );
+    //
+    //         console.log(friends)
+    //     })
+    //         .catch(error => console.log("error", error));
+    // })();
+
+
+    function setName(){
+
+        fetch("http://localhost:8080/friends/CONFIRMED", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -50,24 +84,28 @@ const Friends = () => {
                     refreshToken,
                 }
             },
+
         }).then(async response => {
-            console.log(response.data["data"])
-            response.data["data"].forEach(fr => {
-                let a = friends
-                let b = fr["login"]
-                a.push(fr["login"])
-                setFriends(a)
-                document.getElementById("frrr").innerHTML += "<option style={styles.option1}>" + b + "</option>"
 
+            let a = await response.json()
+            console.log(a)
+            let b = []
+            let c = []
+            a['data'].forEach(s => {
+                b.push(s["from"]['login'])
+                c.push(s["from"])
             })
-            listFriends = friends.map((fr) =>
-                <option style={styles.option}>{fr}</option>
-            );
-
+            setFriends(b)
+            setFriendsFull(c)
             console.log(friends)
         })
             .catch(error => console.log("error", error));
-    })();
+    }
+
+
+
+
+
 
 
     return (
@@ -75,7 +113,8 @@ const Friends = () => {
             <Link to={'/main'} style={styles.back}>
                 <Image style={styles.backarrow} source={require("../../assets/profile/backarrow.png")}></Image>
             </Link>
-            <Text style={styles.header}>Друзья</Text>
+            <Text style={styles.header} onClick={function (){setName()}}>Друзья</Text>
+
             <View style={styles.btnadd}>
                 <Link to={"/friends/add"} >
                     <p>Добавление в друзья</p>
@@ -182,7 +221,7 @@ let styles = StyleSheet.create({
     btnadd: {
         backgroundColor: "#844E36",
         width: '45%',
-        top: '3%',
+        top: '2%',
         marginLeft: 'auto',
         marginRight: 'auto',
         flexDirection: 'row',
