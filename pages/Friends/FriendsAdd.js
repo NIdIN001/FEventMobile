@@ -15,7 +15,7 @@ const ProfileEdit = () => {
 
     const [friends, setFriends] = useState([])
     const [addFr, setAddFr] = useState();
-
+    let idUser = Cookies.get("id");
     let listFriends = friends.map((fr) =>
         <View style={styles.flex} key={fr['id']}>
             <Text>{fr['login']}</Text>
@@ -63,7 +63,9 @@ const ProfileEdit = () => {
             let b = []
             let c = []
             a['data'].forEach(s => {
-                b.push(s["from"])
+                if(s['from']['id'] != idUser){
+                    b.push(s["from"])
+                }
             })
             setFriends(b)
             console.log(friends)
@@ -71,6 +73,38 @@ const ProfileEdit = () => {
             .catch(error => console.log("error", error));
     }
 
+
+    function addFFriend(){
+        console.log('add')
+        console.log(addFr)
+        axios("http://localhost:8080/friends/add",{
+            method: "POST",
+            data: {"friendId": addFr},
+            headers: {
+                "Content-Type": "application/json",
+                Cookie: {
+                    accessToken,
+                    refreshToken,
+                }
+            },
+        }).then(res => {
+            console.log(res)
+            if (res.data.errorStatus === "OK") {
+                showMessage({
+                    message: "Заявка отправлена!",
+                    type: "success",
+                });
+            }
+            else {
+                showMessage({
+                    message: res.data.errorMessage,
+                    type: "danger",
+                });
+            }
+        })
+            .catch(error => console.log("error", error));
+        console.log(name)
+    }
 
     function addFriend(rr){
         console.log('add')
@@ -143,8 +177,8 @@ const ProfileEdit = () => {
             </Link>
             <Text style={styles.header} onClick={function (){setName()}}>Добавление в друзья</Text>
             <View style={styles.inblock}>
-                <TextInput style={styles.input} placeholder={'Введите ID'} onChangeText={function(text) {setAdwwdFr(text)}}></TextInput>
-                <button style={styles.link1} onClick={function() {addFriend()}}>Добавить</button>
+                <TextInput style={styles.input} placeholder={'Введите ID'} onChangeText={function(text) {setAddFr(text)}}></TextInput>
+                <button style={styles.link1} onClick={function() {addFFriend()}}>Добавить</button>
             </View>
             <form style={styles.inblock}>
                 <div style={styles.list} id="frrr">

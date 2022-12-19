@@ -32,14 +32,16 @@ const LogInScreen = () => {
                 data: data,
                 headers: {
                     "Content-Type": "application/json",
+                    "Access-Control-Allow-Credentials": true,
+                    "Access-Control-Allow-Origin": "http://localhost:9670",
+                    "Access-Control-Allow-Headers": "Authorization"
                 },
             }).then(res => {
                 console.log(res)
                 if (res.data.errorStatus === "OK") {
-                    console.log('123123')
-                    console.log(res.data.data.jwtPair.accessToken)
                     Cookies.set("accessToken", res.data.data.jwtPair.accessToken);
                     Cookies.set("refreshToken", res.data.data.jwtPair.refreshToken);
+                    Cookies.set("id", res.data.data.user.id);
                     showMessage({
                         message: "Авторизация прошла успешно!",
                         type: "success",
