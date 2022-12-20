@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 
     },
     text: {
-        fontFamily: "Open Sans"
+        fontFamily: "OpenSans"
     }
 })
 

@@ -14,18 +14,19 @@ const FilterModal = (props) => {
     const [category, setCategory] = useState(null)
 
     let collectParameters = () => {
+        props.setEvents([])
         let dict = {}
         if (isOnline && !isOffline) {
             dict["isOnline"] = true
         }
         if (!isOnline && isOffline) {
-            dict["isOnline"] = true
+            dict["isOnline"] = false
         }
         if (!isForAll && isFriends) {
             dict["isPrivate"] = true
         }
         if (isForAll && !isFriends) {
-            dict["isPrivate"] = true
+            dict["isPrivate"] = false
         }
         if (ageMin !== null) {
             dict["ageMin"] = ageMin

@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, ScrollView, SafeAreaView, StatusBar, Alert} from "react-native";
+import {View, StyleSheet, ScrollView, SafeAreaView, StatusBar, Alert, Pressable, Image} from "react-native";
 import EventItem from "./EventItem";
 import axios from "axios";
 import Cookies from "js-cookie";
 import {showMessage} from "react-native-flash-message";
 
 const EventList = (props) => {
+    let events = props.events
+    let setEvents = props.setEvents
     console.log(props.filter)
     /*const [events, setEvents] = useState([
         {'id': 1, 'name': 'Новый год', 'description': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbb ' +
@@ -19,7 +21,6 @@ const EventList = (props) => {
         {'id': 4, 'name': 'Новый год', 'description': 'a', 'datetimeStart': 'Sat 06.11.22 15:30 ', 'datetimeEnd': 'Sat 06.11.22 17:30',
             'ageMin': 18, 'ageMax': 35, 'isOnline': false, 'isPrivate': false},
     ])*/
-    const [events, setEvents] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [fetching, setFetching] = useState(true)
     const [totalCount, setTotalCount] = useState(0)
@@ -38,10 +39,13 @@ const EventList = (props) => {
 
     useEffect(() => {
         if (fetching) {
+            if (events === []) {
+                setCurrentPage(1)
+            }
             console.log("fetching")
             axios.get(`http://192.168.0.103:8080/event/view`,
                  {
-                     params: props.filter,
+                     params: {...props.filter, page: currentPage},
                     "Content-Type": "application/json",
                     "Token": Cookies.get("token")
                 }
@@ -49,6 +53,7 @@ const EventList = (props) => {
                 .then(res => {
                     console.log(res)
                     if (res.data.errorStatus === "OK") {
+                        //setCurrentPage((value) => value+1)
                         console.log(res.data.data.eventFoundDto)
                         if (res.data.data.eventFoundDto !== []) {
                             setEvents([...events, ...res.data.data.eventFoundDto])
@@ -70,13 +75,16 @@ const EventList = (props) => {
                 })
                 .finally(() => setFetching(false))
         }
-    }, [])
+    }, [fetching])
 
     return (
         <View style={styles.container}>
             <ScrollView style={styles.scrollView} onContentSizeChange={onContentSizeChange} onScroll={scrollHandler}>
                 <View style={styles.list}>
                     {events?.map(a => <EventItem event={a} image={require("../assets/icon.png")}/>)}
+                    <Pressable style={{backgroundColor: "#FFFF00"}} onPress={() => setFetching(true)}>
+                        <Image source={require("../assets/plus.png")}></Image>
+                    </Pressable>
                 </View>
             </ScrollView>
         </View>

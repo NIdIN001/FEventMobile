@@ -9,7 +9,7 @@ const FilterButton = (props) => {
             <View style={styles.container}>
                 <Modal hasBackdrop={false} animationType={'fade'} visible={displayFilter}
                        onRequestClose={() => { setDisplayFilter(false)} }>
-                    <FilterModal setFilter={props.setFilter}/>
+                    <FilterModal setEvents={props.setEvents} setFilter={props.setFilter}/>
                 </Modal>
                 <Image source={require("../../assets/filter.png")}/>
             </View>

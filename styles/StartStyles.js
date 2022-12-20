@@ -14,6 +14,7 @@ const startStyles = StyleSheet.create({
 
     },
     background: {
+        display:'flex', ///
         backgroundColor: '#484854',
         flex: 1,
         justifyContent: "space-around",

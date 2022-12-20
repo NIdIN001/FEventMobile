@@ -11,6 +11,7 @@ const MainComponent = () => {
     const [view, setView] = useState(false)
     const [create, setCreate] = useState(false)
     const [filterDict, setFilterDict] = useState({})
+    const [events, setEvents] = useState([])
     return (
         <View style={styles.mainComponent}>
             <Modal animationType={"slide"} visible={create}>
@@ -19,9 +20,9 @@ const MainComponent = () => {
             <View style={styles.topPanel}>
                 <AddEventButton callback={setCreate}/>
                 <CustomSwitch callback={setView}/>
-                <FilterButton setFilter={setFilterDict}/>
+                <FilterButton setEvents={setEvents} setFilter={setFilterDict}/>
             </View>
-            {view ? <EventList filter={filterDict}/> : <Text>Карты пока нет :(</Text>}
+            {view ? <EventList events={events} setEvents={setEvents} filter={filterDict}/> : <Text>Карты пока нет :(</Text>}
         </View>
     );
 };

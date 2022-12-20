@@ -23,6 +23,7 @@ const AddEvent = (props) => {
     const [isPrivate, setPrivate] = useState(false);
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
+    const [category, setCategory] = useState('')
 
     let collectData = () => {
         let data = {
@@ -30,6 +31,7 @@ const AddEvent = (props) => {
             "datetimeStart": dateTimeStart.toISOString(),
             "datetimeEnd": dateTimeFinish.toISOString(),
             "address": address,
+            "category": category,
             // "isOnline": isOnline,
             // "isPrivate": isPrivate
         }
@@ -193,6 +195,13 @@ const AddEvent = (props) => {
                                            placeholder={"Адрес"}
                                            editable={true}
                                            onChangeText={(value) => setAddress(value)}/>
+                            </View>
+                            <View style={styles.fieldContainer}>
+                                <Text style={styles.textContainer}>Категория</Text>
+                                <TextInput style={styles.textContainer}
+                                           placeholder={"Категория"}
+                                           editable={true}
+                                           onChangeText={(value) => setCategory(value)}/>
                             </View>
                             <View style={styles.fieldContainer}>
                                 <Text style={styles.textContainer}>Максимальное количество участников</Text>

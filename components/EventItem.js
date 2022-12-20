@@ -54,6 +54,9 @@ const EventItem = (props) => {
                         <Text style={styles.descriptionText}>{props.event.isOnline ? "Онлайн" : "Оффлайн"}</Text>
                         <Text style={styles.descriptionText}>{props.event.isPrivate ? "Доступно для друзей" : "Доступно для всех"}</Text>
                     </View>
+                    <View style={styles.pairDataContainer}>
+                        <Text style={styles.descriptionText}>Участники: {props.event.membersCount} из {props.event.maxMembers}</Text>
+                    </View>
                 </View>
             </View>
         </View>

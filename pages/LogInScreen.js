@@ -39,8 +39,9 @@ const LogInScreen = () => {
             }).then(res => {
                 console.log(res)
                 if (res.data.errorStatus === "OK") {
-                    Cookies.set("token", res.data.data.jwtPair.accessToken);
-                    Cookies.set("refresh", res.data.data.jwtPair.refreshToken);
+                    Cookies.set("accessToken", res.data.data.jwtPair.accessToken);
+                    Cookies.set("refreshToken", res.data.data.jwtPair.refreshToken);
+                    Cookies.set("id", res.data.data.user.id);
                     showMessage({
                         message: "Авторизация прошла успешно!",
                         type: "success",
