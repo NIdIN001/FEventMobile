@@ -57,7 +57,7 @@ const Profile = () => {
     let accessToken = 'accessToken=' + Cookies.get("token");
     let refreshToken = 'refreshToken=' + Cookies.get("refresh");
     function saveCity(data) {
-        axios(`http://localhost:8080/user/change-profile-info`, {
+        axios(`http://192.168.0.103:8080/user/change-profile-info`, {
             method: 'put',
             data: data,
             headers: {

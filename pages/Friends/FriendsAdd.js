@@ -50,7 +50,7 @@ const ProfileEdit = () => {
 
     function setName(){
 
-        fetch("http://localhost:8080/friends/REQUEST", {
+        fetch("http://192.168.0.103:8080/friends/REQUEST", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -81,7 +81,7 @@ const ProfileEdit = () => {
     function addFFriend(){
         console.log('add')
         console.log(addFr)
-        axios("http://localhost:8080/friends/add",{
+        axios("http://192.168.0.103:8080/friends/add",{
             method: "POST",
             data: {"friendId": addFr},
             headers: {
@@ -107,13 +107,12 @@ const ProfileEdit = () => {
             }
         })
             .catch(error => console.log("error", error));
-        console.log(name)
     }
 
     function addFriend(rr){
         console.log('add')
         console.log(rr)
-        axios("http://localhost:8080/friends/accept",{
+        axios("http://192.168.0.103:8080/friends/accept",{
             method: "POST",
             data: {"friendId": rr},
             headers: {
@@ -178,14 +177,21 @@ const ProfileEdit = () => {
             <Link to={'/friends'} style={styles.back}>
                 <Image style={styles.backarrow} source={require("../../assets/profile/backarrow.png")}></Image>
             </Link>
-            <Text style={styles.header} onClick={function (){setName()}}>Добавление в друзья</Text>
+            <Pressable style={styles.header} onPress={setName}>
+                <Text style={styles.header} onClick={function (){setName()}}>Друзья</Text>
+            </Pressable>
             <View style={styles.inblock}>
                 <TextInput style={styles.input} placeholder={'Введите ID'} onChangeText={function(text) {setAddFr(text)}}></TextInput>
-                <Pressable style={styles.link1} onClick={() => {addFFriend()}}><Text>Добавить</Text></Pressable>
+                <Pressable style={styles.link1} onPress={() => {addFFriend()}}><Text>Добавить</Text></Pressable>
             </View>
             <Form style={styles.inblock}>
                 <View style={styles.list} id="frrr">
-                    {listFriends}
+                    {friends?.map((fr) =>
+                        <View style={styles.flex} key={fr['id']}>
+                            <Text>{fr['login']}</Text>
+                            <Image style={styles.icon} source={require("../../assets/gal.png")} onClick={function (){addFriend(fr['id'])}}></Image>
+                            <Image style={styles.icon} source={require("../../assets/krest.png")} onClick={function (){noAddFriend(fr['id'])}}></Image>
+                        </View>)}
                 </View>
             </Form>
         </View>
