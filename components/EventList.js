@@ -54,9 +54,9 @@ const EventList = (props) => {
                     console.log(res)
                     if (res.data.errorStatus === "OK") {
                         //setCurrentPage((value) => value+1)
-                        console.log(res.data.data.eventFoundDto)
+                        console.log(res.data.data.eventDto)
                         if (res.data.data.eventFoundDto !== []) {
-                            setEvents([...events, ...res.data.data.eventFoundDto])
+                            setEvents([...events, ...res.data.data.eventDto])
                             setCurrentPage(prevState => prevState + 1)
                         }
                     }

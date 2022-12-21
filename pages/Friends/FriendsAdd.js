@@ -137,7 +137,6 @@ const ProfileEdit = () => {
             }
         })
             .catch(error => console.log("error", error));
-        console.log(name)
     }
 
     function noAddFriend(){
@@ -169,7 +168,6 @@ const ProfileEdit = () => {
             }
         })
             .catch(error => console.log("error", error));
-        console.log(name)
     }
 
     return (
@@ -184,16 +182,21 @@ const ProfileEdit = () => {
                 <TextInput style={styles.input} placeholder={'Введите ID'} onChangeText={function(text) {setAddFr(text)}}></TextInput>
                 <Pressable style={styles.link1} onPress={() => {addFFriend()}}><Text>Добавить</Text></Pressable>
             </View>
-            <Form style={styles.inblock}>
+            <View style={styles.inblock}>
                 <View style={styles.list} id="frrr">
                     {friends?.map((fr) =>
                         <View style={styles.flex} key={fr['id']}>
                             <Text>{fr['login']}</Text>
-                            <Image style={styles.icon} source={require("../../assets/gal.png")} onClick={function (){addFriend(fr['id'])}}></Image>
-                            <Image style={styles.icon} source={require("../../assets/krest.png")} onClick={function (){noAddFriend(fr['id'])}}></Image>
+                            <Pressable style={styles.icon} onPress={() => addFriend(fr['id'])}>
+                                <Image style={styles.icon} source={require("../../assets/gal.png")} onClick={function (){addFriend(fr['id'])}}></Image>
+
+                            </Pressable>
+                            <Pressable style={styles.icon} onPress={() => noAddFriend(fr['id'])}>
+                                <Image style={styles.icon} source={require("../../assets/krest.png")} onClick={function (){noAddFriend(fr['id'])}}></Image>
+                            </Pressable>
                         </View>)}
                 </View>
-            </Form>
+            </View>
         </View>
     );
 };
@@ -255,7 +258,6 @@ let styles = StyleSheet.create({
     list: {
         width: 300,
         paddingTop: 20,
-        margin: '0 auto'
     },
 
     form: {

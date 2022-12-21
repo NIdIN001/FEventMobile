@@ -1,5 +1,16 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Alert, Button, FlatList, Image, StyleSheet, Text, TextInput, TouchableHighlight, View} from "react-native";
+import {
+    Alert,
+    Button,
+    FlatList,
+    Image,
+    Pressable,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableHighlight,
+    View
+} from "react-native";
 import {Link, useNavigate} from "react-router-native";
 import {useFonts} from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -54,8 +65,8 @@ const Profile = () => {
     let listPlaces = places.map((place) =>
         <Text style={styles.option} key={place} value={place} onClick={function (){setCity(place)}}>{place}</Text>
     )
-    let accessToken = 'accessToken=' + Cookies.get("token");
-    let refreshToken = 'refreshToken=' + Cookies.get("refresh");
+    let accessToken = 'accessToken=' + Cookies.get("accessToken");
+    let refreshToken = 'refreshToken=' + Cookies.get("refreshToken");
     function saveCity(data) {
         axios(`http://192.168.0.103:8080/user/change-profile-info`, {
             method: 'put',
@@ -115,14 +126,18 @@ const Profile = () => {
             .then(async response => {
                 let a = await response.json()
                 let b = []
+                let i = 0;
                 a['suggestions'].forEach(s => {
-                    b.push(s['value'])
+                    if( i < 6){
+                        b.push(s['value'])
+                        i++
+                    }
                 })
                 console.log(b)
                 setPlaces(b)
             })
             .catch(error => console.log("error", error));
-         console.log(name)
+        console.log(name)
     }
 
     return (
@@ -136,22 +151,23 @@ const Profile = () => {
                 <TextInput style={styles.input} placeholder={'Начните вводить название города...'} onChangeText={function(text) {setName(text)}}></TextInput>
             </View>
 
-            <View >
-                <Form onSubmit={saveCity}>
-                    <FlatList style={styles.list} size="10" id="select_">
-                        {listPlaces}
-                    </FlatList>
-                    <TouchableHighlight style={logStyles.button}
-                                        onPress={() => {saveCity({
-                                            "login": login,
-                                            "lastName": lastName,
-                                            "firstName": "Dima",
-                                            "city": city,
-                                            "phoneNumber": phoneNumber})}}>
-                        <Text style={logStyles.text} >Сохранить</Text>
-                    </TouchableHighlight>
-                </Form>
-            </View>
+            {places?.map(pl =>
+                <Pressable style={styles.option} onPress={function (){setCity(pl)}}>
+                    <Text style={styles.option}>{pl}</Text>
+                </Pressable>
+            )}
+
+
+
+            <TouchableHighlight style={logStyles.button}
+                                onPress={() => {saveCity({
+                                    "login": login,
+                                    "lastName": lastName,
+                                    "firstName": "Dima",
+                                    "city": city,
+                                    "phoneNumber": phoneNumber})}}>
+                <Text style={logStyles.text} >Сохранить</Text>
+            </TouchableHighlight>
             <BottomTabs/>
         </View>
     );
@@ -170,7 +186,7 @@ let styles = StyleSheet.create({
 
     header: {
 
-      //  top: '3%',
+        marginTop: 30,
         width: '100%',
         position: "absolute",
         fontFamily: "RubikMonoOne",
@@ -185,6 +201,7 @@ let styles = StyleSheet.create({
 
     back: {
         //top: '2%',
+        marginTop: 30,
         marginLeft: '5%',
         width: 32,
         height: 32
