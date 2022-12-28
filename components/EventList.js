@@ -82,7 +82,7 @@ const EventList = (props) => {
             <ScrollView style={styles.scrollView} onContentSizeChange={onContentSizeChange} onScroll={scrollHandler}>
                 <View style={styles.list}>
                     {events?.map(a => <EventItem event={a} image={require("../assets/icon.png")}/>)}
-                    <Pressable style={{backgroundColor: "#FFFF00"}} onPress={() => setFetching(true)}>
+                    <Pressable style={{backgroundColor: "rgba(132, 78, 54, 1)"}} onPress={() => setFetching(true)}>
                         <Image source={require("../assets/plus.png")}></Image>
                     </Pressable>
                 </View>

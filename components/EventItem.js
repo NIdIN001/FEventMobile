@@ -37,22 +37,22 @@ const EventItem = (props) => {
                     <View style={styles.pairDataContainer}>
                         <Text style={styles.dataText}>Начало: {props.event.datetimeStart}</Text>
                     </View>
-                    <View style={styles.pairDataContainer}>
+                    {/*<View style={styles.pairDataContainer}>
                         <Text style={styles.dataText}>Конец: {props.event.datetimeEnd}</Text>
-                    </View>
-                    {
+                    </View>*/}
+{/*                    {
                         ageConstrains !== '' ?
                         <View style={styles.pairDataContainer}>
                             <Text style={styles.descriptionText}>{ageConstrains}</Text>
                         </View> : <></>
-                    }
+                    }*/}
 
-                    <View style={styles.pairDataContainer}>
+                    {/*<View style={styles.pairDataContainer}>
                         <Text style={styles.descriptionText}>{props.event.maxMembers === undefined? "" : "До " + props.event.maxMembers + " участников"}</Text>
-                    </View>
+                    </View>*/}
                     <View style={styles.pairDataContainer}>
                         <Text style={styles.descriptionText}>{props.event.isOnline ? "Онлайн" : "Оффлайн"}</Text>
-                        <Text style={styles.descriptionText}>{props.event.isPrivate ? "Доступно для друзей" : "Доступно для всех"}</Text>
+                        {/*<Text style={styles.descriptionText}>{props.event.isPrivate ? "Доступно для друзей" : "Доступно для всех"}</Text>*/}
                     </View>
                     <View style={styles.pairDataContainer}>
                         <Text style={styles.descriptionText}>Участники: {props.event.membersCount} из {props.event.maxMembers}</Text>
@@ -131,8 +131,6 @@ const styles = StyleSheet.create({
         textAlign: "left"
     },
     dataText: {
-        //   display:"flex",
-        //   flexDirection: "column",
         height: "40%",
     },
     verticalTextContainer: {

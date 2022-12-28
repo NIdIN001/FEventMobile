@@ -7,6 +7,7 @@ import ProfileTopButton from "../../components/buttons/profileTopButton";
 import axios from "axios";
 import Cookies from "js-cookie";
 import {showMessage} from "react-native-flash-message";
+import {Storage} from "expo-storage";
 
 function Form(props) {
     return null;
@@ -16,7 +17,12 @@ const ProfileEdit = () => {
     const [fontsLoaded] = useFonts({
         'RubikMonoOne': require('../../assets/fonts/RubikMonoOne-Regular.ttf'),
     });
-
+    const [user, setUser] = useState({})
+    useEffect(() => {
+        Storage.getItem({key: `user`}).then(
+            res=>setUser(JSON.parse(res))
+        )
+    }, [])
     const [friends, setFriends] = useState([])
     const [addFr, setAddFr] = useState();
     let idUser = Cookies.get("id");
@@ -67,7 +73,7 @@ const ProfileEdit = () => {
             let b = []
             let c = []
             a['data'].forEach(s => {
-                if(s['from']['id'] != idUser){
+                if(s['from']['id'] !== user['id']){
                     b.push(s["from"])
                 }
             })
@@ -139,12 +145,12 @@ const ProfileEdit = () => {
             .catch(error => console.log("error", error));
     }
 
-    function noAddFriend(){
-        console.log('add')
-        console.log(addFr)
+    function noAddFriend(rr){
+        console.log('no')
+        console.log(rr)
         axios("http://192.168.0.103:8080/friends/delete/REQUEST",{
             method: "POST",
-            data: {"friendId": addFr},
+            data: {"friendId": rr},
             headers: {
                 "Content-Type": "application/json",
                 Cookie: {
@@ -178,6 +184,7 @@ const ProfileEdit = () => {
             <Pressable style={styles.header} onPress={setName}>
                 <Text style={styles.header} onClick={function (){setName()}}>Друзья</Text>
             </Pressable>
+            <Text style={{marginLeft: 10, fontSize: 20}}>Мой ID: {user['id']}</Text>
             <View style={styles.inblock}>
                 <TextInput style={styles.input} placeholder={'Введите ID'} onChangeText={function(text) {setAddFr(text)}}></TextInput>
                 <Pressable style={styles.link1} onPress={() => {addFFriend()}}><Text>Добавить</Text></Pressable>
@@ -188,11 +195,11 @@ const ProfileEdit = () => {
                         <View style={styles.flex} key={fr['id']}>
                             <Text>{fr['login']}</Text>
                             <Pressable style={styles.icon} onPress={() => addFriend(fr['id'])}>
-                                <Image style={styles.icon} source={require("../../assets/gal.png")} onClick={function (){addFriend(fr['id'])}}></Image>
+                                <Image style={styles.icon} source={require("../../assets/gal.png")}></Image>
 
                             </Pressable>
                             <Pressable style={styles.icon} onPress={() => noAddFriend(fr['id'])}>
-                                <Image style={styles.icon} source={require("../../assets/krest.png")} onClick={function (){noAddFriend(fr['id'])}}></Image>
+                                <Image style={styles.icon} source={require("../../assets/krest.png")} ></Image>
                             </Pressable>
                         </View>)}
                 </View>

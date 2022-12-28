@@ -28,18 +28,24 @@ const ProfileEdit = () => {
 
     //const user = JSON.parse(Cookies.get("user"));
     const [user, setUser] = useState({})
-    Storage.getItem({key: `user`}).then(
-        res=>setUser(res)
-    )
+
+
     console.log(user)
 
-    const [login, setLogin] = useState(user.login);
-    const [firstName, setFirstName] = useState(user.firstName);
-    const [lastName, setLastName] = useState(user.lastName);
-    const [city, setCity] = useState(user.city);
-    const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
-
     useEffect(() => {
+        Storage.getItem({key: `user`}).then(
+            res => setUser(JSON.parse(res))
+        )
+    }, [])
+    const [login, setLogin] = useState(user["login"]);
+    const [firstName, setFirstName] = useState(user["firstName"]);
+    const [lastName, setLastName] = useState(user["lastName"]);
+    const [city, setCity] = useState(user["city"]);
+    const [phoneNumber, setPhoneNumber] = useState(user["phoneNumber"]);
+    console.log(user)
+    console.log(phoneNumber)
+
+    useEffect(async () => {
         async function prepare() {
             await SplashScreen.preventAutoHideAsync();
         }
@@ -60,10 +66,36 @@ const ProfileEdit = () => {
     let accessToken = 'accessToken=' + Cookies.get("token");
     let refreshToken = 'refreshToken=' + Cookies.get("refresh");
     let editProfile = async (data) => {
+        console.log("data?2/q/fe")
+        let data1 =  {"login": user["login"],
+            "lastName": user["lastName"],
+            "firstName": user["firstName"],
+            "city": user["city"],
+            "phoneNumber": user["phoneNumber"]}
+        if (login !== undefined) {
+            data1["login"] = login
+        }
+        if (lastName !== undefined) {
+            data1["lastName"] = lastName
+        }
+        if (login !== undefined) {
+            data1["login"] = login
+        }
+        if (firstName !== undefined) {
+            data1["firstName"] = firstName
+        }
+/*        if (city !== undefined) {
+            data1["city"] = city
+        }*/
+        if (phoneNumber !== undefined) {
+            data1["phoneNumber"] = phoneNumber
+        }
+
+        console.log(data)
         if (login !== "") {
             axios(`http://192.168.0.103:8080/user/change-profile-info`, {
                 method: 'put',
-                data: data,
+                data: data1,
                 headers: {
                     "Content-Type": "application/json",
                     Cookie: {
@@ -78,7 +110,7 @@ const ProfileEdit = () => {
                         message: "Изменение прошло успешно!",
                         type: "success",
                     });
-                    navigate("/profile")
+                    //navigate("/profile")
                 } else {
                     showMessage({
                         message: res.data.errorMessage,
@@ -94,7 +126,12 @@ const ProfileEdit = () => {
                 })
         }
     }
-
+/*    setLogin(user["login"])
+    setCity(user["city"])
+    setPhoneNumber(user["phoneNumber"])
+    setFirstName(user["firstName"])
+    setLastName(user["lastName"])
+    setCity(user["city"])*/
     return (
         <View style={styles.background} onLayout={onLayoutRootView}>
             <Link to={'/profile'} style={styles.back}>
@@ -103,21 +140,21 @@ const ProfileEdit = () => {
             <Text style={styles.header}>ИЗМЕНЕНИЕ ПРОФИЛЯ</Text>
 
             <View style={styles.form}>
-                <TextInput style={styles.input} placeholder={'Логин'} onChangeText={function (text) {
+                <TextInput style={styles.input} defaultValue={user["login"]} placeholder={'Логин'} onChangeText={function (text) {
                     setLogin(text)
                 }}></TextInput>
-                <TextInput style={styles.input} placeholder={'Имя'}
+                <TextInput style={styles.input} defaultValue={user["firstName"]} placeholder={'Имя'}
                            onChangeText={function (text) {
                                setFirstName(text)
                            }}></TextInput>
-                <TextInput style={styles.input} placeholder={'Фамилия'}
+                <TextInput style={styles.input} defaultValue={user["lastName"]} placeholder={'Фамилия'}
                            onChangeText={function (text) {
                                setLastName(text)
                            }}></TextInput>
-                <TextInput style={styles.input} placeholder={'Город'} onChangeText={function (text) {
+{/*                <TextInput style={styles.input} defaultValue={user["city"]} placeholder={'Город'} onChangeText={function (text) {
                     setCity(text)
-                }}></TextInput>
-                <TextInput style={styles.input} placeholder={'Номер'}
+                }}></TextInput>*/}
+                <TextInput style={styles.input} defaultValue={user["phoneNumber"]} placeholder={'Номер'}
                            onChangeText={(text) => {
                                setPhoneNumber(text)
                            }}></TextInput>

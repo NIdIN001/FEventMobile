@@ -27,20 +27,34 @@ function Form(props) {
 }
 
 const Profile = () => {
-    const [places, setPlaces] = useState([]);
-
     const [user, setUser] = useState({})
-    Storage.getItem({key: `user`}).then(
-        res=>setUser(res)
-    )
-    let navigate = useNavigate();
-
-    const [login, setLogin] = useState(user.login);
+    const [places, setPlaces] = useState([]);
+    const [login, setLogin] = useState('');
     const [firstName, setFirstName] = useState(user.firstName);
     const [lastName, setLastName] = useState(user.lastName);
     const [city, setCity] = useState(user.city);
     const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
+    useEffect(() => {
+        Storage.getItem({key: `user`}).then(
+            res=>setUser(JSON.parse(res))
+        )
+        setLogin(user["login"])
+        setCity(user["city"])
+        setPhoneNumber(user["phoneNumber"])
+        setFirstName(user["firstName"])
+        setLastName(user["lastName"])
+        setCity(user["city"])
+        console.log("qwerr")
+        console.log(user["login"])
+    }, [])
 
+    console.log("console user")
+    console.log(user)
+    let navigate = useNavigate();
+
+
+    console.log(firstName)
+    console.log(city)
 
     const [fontsLoaded] = useFonts({
         'RubikMonoOne': require('../../assets/fonts/RubikMonoOne-Regular.ttf'),
@@ -68,6 +82,13 @@ const Profile = () => {
     let accessToken = 'accessToken=' + Cookies.get("accessToken");
     let refreshToken = 'refreshToken=' + Cookies.get("refreshToken");
     function saveCity(data) {
+        console.log("data")
+        data = {"login": user["login"],
+            "lastName": user["lastName"],
+            "firstName": user["firstName"],
+            "city": data.city,
+            "phoneNumber": user["phoneNumber"]}
+        console.log(data)
         axios(`http://192.168.0.103:8080/user/change-profile-info`, {
             method: 'put',
             data: data,
@@ -104,38 +125,31 @@ const Profile = () => {
 
 
 
-    let url = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address";
-    let token = "33e779796a501b9be3d6ca1d589fb950d4d0cf90";
+    let url = 'http://192.168.0.103:8080/city';
     let name;
-    let options
     function setName(text){
         name = text;
 
-        options = {
+        axios(url,{
             method: "POST",
-            mode: "cors",
+            data: {"cityName": name},
             headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "Authorization": "Token " + token
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify({query: name})
-        }
+        }).then(async response => {
 
-        fetch(url, options)
-            .then(async response => {
-                let a = await response.json()
-                let b = []
-                let i = 0;
-                a['suggestions'].forEach(s => {
-                    if( i < 6){
-                        b.push(s['value'])
-                        i++
-                    }
-                })
-                console.log(b)
-                setPlaces(b)
+            console.log(response)
+            let b = []
+            let i = 0
+            response['data']['data'].forEach(s => {
+                if (i < 6) {
+                    b.push(s['cityName'])
+                    i += 1
+                }
             })
+            console.log(b)
+            setPlaces(b)
+        })
             .catch(error => console.log("error", error));
         console.log(name)
     }
@@ -163,7 +177,7 @@ const Profile = () => {
                                 onPress={() => {saveCity({
                                     "login": login,
                                     "lastName": lastName,
-                                    "firstName": "Dima",
+                                    "firstName": firstName,
                                     "city": city,
                                     "phoneNumber": phoneNumber})}}>
                 <Text style={logStyles.text} >Сохранить</Text>

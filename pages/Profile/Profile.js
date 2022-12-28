@@ -60,7 +60,7 @@ const Profile = () => {
             setLogin(res.data.data.login);
             setCity(res.data.data.city);
             Cookies.set("user", JSON.stringify(res.data.data))
-            Storage.setItem({
+            await Storage.setItem({
                 key: `user`,
                 value: JSON.stringify(res.data.data)
             })
